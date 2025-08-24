@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -12,14 +13,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('role_user', function (Blueprint $table) {
-        //    $table->id();
-                        $table->uuid('id')->primary();
+    $table->foreignUuid('role_id')->constrained('roles')->cascadeOnDelete();
+    $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
+    $table->primary(['role_id', 'user_id']); // composite key
+    $table->timestamps();
+});
 
-            $table->foreignUuid('role_id')->constrained('roles');
-            $table->foreignUuid('user_id')->constrained('users');
-
-            $table->timestamps();
-        });
     }
 
     /**
